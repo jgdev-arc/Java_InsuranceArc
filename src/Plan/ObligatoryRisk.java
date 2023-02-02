@@ -15,7 +15,6 @@ public class ObligatoryRisk extends Risk{
     public float getCeiling() {
         return 4;
     }
-
     public String[] obligatoryRisksCovered = {
             "Third Party Damage"
     };

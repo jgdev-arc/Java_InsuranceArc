@@ -5,14 +5,14 @@ import java.io.Serializable;
 public class Vehicle implements Serializable {
     int plateNum;
     int modelYear;
-    String manufacturer;
+    String manufacture;
     int estimatedValue;
     int carDamage;
 
-    public Vehicle(int plateNum, int modelYear, String manufacturer, int estimatedValue, int carDamage) {
+    public Vehicle(int plateNum, int modelYear, String manufacture, int estimatedValue, int carDamage) {
         this.plateNum = plateNum;
         this.modelYear = modelYear;
-        this.manufacturer = manufacturer;
+        this.manufacture = manufacture;
         this.estimatedValue = estimatedValue;
         this.carDamage = carDamage;
     }
@@ -33,12 +33,12 @@ public class Vehicle implements Serializable {
         this.modelYear = modelYear;
     }
 
-    public String getManufacturer() {
-        return manufacturer;
+    public String getManufacture() {
+        return manufacture;
     }
 
-    public void setManufacturer(String manufacturer) {
-        this.manufacturer = manufacturer;
+    public void setManufacture(String manufacture) {
+        this.manufacture = manufacture;
     }
 
     public int getEstimatedValue() {
@@ -59,12 +59,10 @@ public class Vehicle implements Serializable {
 
     @Override
     public String toString() {
-        return "Vehicle{" +
-                "plateNum=" + plateNum +
-                ", modelYear=" + modelYear +
-                ", manufacturer='" + manufacturer + '\'' +
-                ", estimatedValue=" + estimatedValue +
-                ", carDamage=" + carDamage +
-                '}';
+        return  "Plate Nb: " + plateNum +
+                "\nModel Year: " + modelYear +
+                "\nManufacture: " + manufacture +
+                "\nEstimated Value: " + estimatedValue +
+                "\nCar Damage Level: " + carDamage;
     }
 }

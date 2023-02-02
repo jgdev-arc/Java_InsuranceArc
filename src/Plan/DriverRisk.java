@@ -17,6 +17,7 @@ public class DriverRisk extends Risk{
     }
 
     public String[] driverRisksCovered = {
-        "Driver Damage"
+            "Driver Damage"
     };
+
 }

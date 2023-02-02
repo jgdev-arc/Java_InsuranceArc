@@ -22,4 +22,5 @@ public class AssistanceRisk extends Risk{
             "Transport",
             "Car Replacement"
     };
+
 }

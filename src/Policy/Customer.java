@@ -40,12 +40,10 @@ public class Customer implements Serializable {
 
     @Override
     public String toString() {
-        return "Customer{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", city='" + city + '\'' +
-                ", customerPhone=" + customerPhone +
-                ", policy=" + policy +
-                '}';
+        return  "First Name: " + firstName + '\n' +
+                "Last Name: " + lastName + '\n' +
+                "City: " + city + '\n' +
+                "Mobile Nb: " + customerPhone + '\n'+
+                "" + policy ;
     }
 }

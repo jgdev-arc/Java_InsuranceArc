@@ -5,27 +5,28 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Policy  implements Serializable {
+public class Policy implements Serializable {
     static int policyNum = 0;
     Vehicle vehicle;
-    List<String> risksCoveredLIST = new ArrayList<>();
+    List<String> risksCoveredList = new ArrayList<>();
 
-    List<Float> premiumLIST = new ArrayList<>();
-    List<Float> coverageLIST = new ArrayList<>();
-    List<Float> ceilingLIST = new ArrayList<>();
+    List<Float> premiumList = new ArrayList<>();
+    List<Float> coverageList = new ArrayList<>();
+    List<Float> ceilingList = new ArrayList<>();
 
     int validityYear;
     LocalDate policyDate;
 
-    public Policy(Vehicle vehicle, List<String> risksCoveredLIST, List<Float> premiumLIST, List<Float> coverageLIST, List<Float> ceilingLIST, int validityYear, LocalDate policyDate) {
+
+    public Policy(Vehicle vehicle, List<String> risksCoveredList, List<Float> premiumList, List<Float> coverageList, List<Float> ceilingList, int validityYear, LocalDate policyDate) {
         this.vehicle = vehicle;
-        this.risksCoveredLIST = risksCoveredLIST;
-        this.premiumLIST = premiumLIST;
-        this.coverageLIST = coverageLIST;
-        this.ceilingLIST = ceilingLIST;
+        this.risksCoveredList = risksCoveredList;
+        this.premiumList = premiumList;
+        this.coverageList = coverageList;
+        this.ceilingList = ceilingList;
         this.validityYear = validityYear;
         this.policyDate = policyDate;
-        policyNum += 1;
+        policyNum +=1;
     }
 
     public static int getPolicyNum() {
@@ -36,20 +37,20 @@ public class Policy  implements Serializable {
         return vehicle;
     }
 
-    public List<String> getRisksCoveredLIST() {
-        return risksCoveredLIST;
+    public List<String> getRisksCoveredList() {
+        return risksCoveredList;
     }
 
-    public List<Float> getPremiumLIST() {
-        return premiumLIST;
+    public List<Float> getPremiumList() {
+        return premiumList;
     }
 
-    public List<Float> getCoverageLIST() {
-        return coverageLIST;
+    public List<Float> getCoverageList() {
+        return coverageList;
     }
 
-    public List<Float> getCeilingLIST() {
-        return ceilingLIST;
+    public List<Float> getCeilingList() {
+        return ceilingList;
     }
 
     public int getValidityYear() {
@@ -62,10 +63,9 @@ public class Policy  implements Serializable {
 
     @Override
     public String toString() {
-        return "Policy{" +
-                "policyNum" + policyNum +
-                "vehicle=" + vehicle +
-                ", validityYear=" + validityYear +
-                '}';
+        return  "Policy NB: " + policyNum +
+                "\n" + vehicle +
+                "\nValidity Year: " + validityYear;
+
     }
 }

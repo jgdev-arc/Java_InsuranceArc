@@ -26,6 +26,6 @@ public class AllRisk extends Risk{
             "Driver Damage",
             "Transport",
             "Car Replacement"
-
     };
+
 }

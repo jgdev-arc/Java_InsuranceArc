@@ -10,7 +10,7 @@ public class VehicleRisk extends Risk{
 
     @Override
     public float getCoverage() {
-        return 0.09f;
+        return 0.9f;
     }
 
     @Override
