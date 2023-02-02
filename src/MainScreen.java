@@ -1,13 +1,19 @@
+import Plan.*;
 import Policy.Customer;
+import Policy.Policy;
+import Policy.Vehicle;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.*;
 
 public class MainScreen extends JFrame {
 
@@ -15,8 +21,8 @@ public class MainScreen extends JFrame {
     Color myColor = Color.GRAY;
 
     // Panel 1
-    JTextField subfirstName;
-    JTextField sublastName;
+    JTextField subFirstName;
+    JTextField subLastName;
     JTextField subCity;
     JTextField subPhone;
 
@@ -38,9 +44,9 @@ public class MainScreen extends JFrame {
     JCheckBox driverDamageCheckbox;
     JCheckBox assistCheckbox;
     List<String> coveredRisksList = new ArrayList<>();
-    List<String> premiumRisksList = new ArrayList<>();
-    List<String> coverageRisksList = new ArrayList<>();
-    List<String> ceilingRisksList = new ArrayList<>();
+    List<Float> premiumRisksList = new ArrayList<>();
+    List<Float> coverageRisksList = new ArrayList<>();
+    List<Float> ceilingRisksList = new ArrayList<>();
 
     //  Panel 4
     JRadioButton yearRadio;
@@ -119,19 +125,19 @@ public class MainScreen extends JFrame {
         JLabel cityLBL = new JLabel("City");
         JLabel phoneLBL = new JLabel("Phone");
 
-        subfirstName = new JTextField();
-        subfirstName.setOpaque(false);
-        sublastName = new JTextField();
-        sublastName.setOpaque(false);
+        subFirstName = new JTextField();
+        subFirstName.setOpaque(false);
+        subLastName = new JTextField();
+        subLastName.setOpaque(false);
         subCity = new JTextField();
         subCity.setOpaque(false);
         subPhone = new JTextField();
         subPhone.setOpaque(false);
 
         p1.add(firstNameLBL);
-        p1.add(subfirstName);
+        p1.add(subFirstName);
         p1.add(lastNameLBL);
-        p1.add(sublastName);
+        p1.add(subLastName);
         p1.add(cityLBL);
         p1.add(subCity);
         p1.add(phoneLBL);
@@ -592,7 +598,7 @@ public class MainScreen extends JFrame {
     public void CustomizePanel12() {
         TitledBorder titledBorder = BorderFactory.createTitledBorder
                 (BorderFactory.createLineBorder(Color.gray, 1),
-                        "    Payments    ",
+                        "    Settlements    ",
                         TitledBorder.CENTER,
                         TitledBorder.DEFAULT_POSITION,
                         myFont, myColor);
@@ -615,11 +621,211 @@ public class MainScreen extends JFrame {
     }
 
 
+    public Customer GetCustomerData() throws ParseException {
+        Customer customer = new Customer(
+                subFirstName.getText(),
+                subLastName.getText(),
+                subCity.getText(),
+                Integer.parseInt(subPhone.getText()),
+                GetPolicyData()
+        );
+        return customer;
+    }
 
-    private void GetRisksCoveredByPlan() {
+
+    public Vehicle GetVehicleData() throws ParseException {
+        Vehicle vehicle = new Vehicle(
+                Integer.parseInt(plateNum.getText()),
+                Integer.parseInt(model.getText()),
+                manufacturer.getText(),
+                Integer.parseInt(estimated.getText()),
+                GetDamageState()
+        );
+        return vehicle;
+    }
+
+    public Policy GetPolicyData() throws ParseException {
+        currentDate = new Date();
+
+        LocalDate now = LocalDate.now();
+        Policy policy = new Policy(
+                GetVehicleData(),
+                coveredRisksList,
+                premiumRisksList,
+                coverageRisksList,
+                ceilingRisksList,
+                validityYear,
+                now);
+
+        return policy;
 
     }
 
+
+    public int GetDamageState() {
+        if (damageRadio1.isSelected()) {
+            return 1;
+        } else if (damageRadio2.isSelected()) {
+            return 2;
+        } else if (damageRadio3.isSelected()) {
+            return 3;
+        } else {
+            return 0;
+        }
+    }
+
+    public void GetRisksCoveredByPlan(){
+        AllRisk allRisk = new AllRisk();
+        ObligatoryRisk obligatoryRisk = new ObligatoryRisk();
+        allRisksCheckbox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                driverDamageCheckbox.setEnabled(false);
+                vehicleDamageCheckbox.setEnabled(false);
+                assistCheckbox.setEnabled(false);
+                obligatoryCheckbox.setEnabled(false);
+
+
+                // Adding Risk details to an array
+                for (int i = 0; i < allRisk.allRisksCovered.length; i++){
+                    coveredRisksList.add(allRisk.allRisksCovered[i]);
+                }
+                premiumRisksList.add(allRisk.getPremium());
+                coverageRisksList.add(allRisk.getCoverage());
+                ceilingRisksList.add(allRisk.getCeiling());
+            }
+        });
+
+        obligatoryCheckbox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Adding Risk details to an array
+                coveredRisksList.add(obligatoryRisk.obligatoryRisksCovered[0]);
+                premiumRisksList.add(obligatoryRisk.getPremium());
+                coverageRisksList.add(obligatoryRisk.getCoverage());
+                ceilingRisksList.add(obligatoryRisk.getCeiling());
+
+            }
+        });
+
+        vehicleDamageCheckbox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                VehicleRisk vehicleRisk = new VehicleRisk();
+
+                // Adding Risk Details to arrays
+                coveredRisksList.add(vehicleRisk.vehicleRisksCovered[0]);
+                premiumRisksList.add(vehicleRisk.getPremium());
+                coverageRisksList.add(vehicleRisk.getCoverage());
+                ceilingRisksList.add(vehicleRisk.getCeiling());
+
+            }
+        });
+
+        driverDamageCheckbox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DriverRisk driverRisk = new DriverRisk();
+                coveredRisksList.add(driverRisk.driverRisksCovered[0]);
+                premiumRisksList.add(driverRisk.getPremium());
+                coverageRisksList.add(driverRisk.getCoverage());
+                ceilingRisksList.add(driverRisk.getCeiling());
+
+            }
+        });
+
+        assistCheckbox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AssistanceRisk assistanceRisk = new AssistanceRisk();
+
+                // Adding Risk details to an array
+                for (int i = 0; i < assistanceRisk.assistanceRisksCovered.length; i++) {
+                    coveredRisksList.add(assistanceRisk.assistanceRisksCovered[i]);
+                }
+                premiumRisksList.add(assistanceRisk.getPremium());
+                coverageRisksList.add(assistanceRisk.getCoverage());
+                ceilingRisksList.add(assistanceRisk.getCeiling());
+            }
+        });
+
+    }
+
+    public void SaveCustomerMapToDisk() throws IOException, ClassNotFoundException, ParseException {
+        File file = new File("D:/myfile.dat");
+        int platenbmr = Integer.parseInt(plateNum.getText());
+
+        if (!file.exists()) {
+            System.out.println("Not Existed");
+            file.createNewFile();
+
+            SaveCustomerMaptoNewFile(platenbmr, file);
+        } else {
+            TreeMap<Integer, Customer> newMaptoSave = new TreeMap<>();
+            InputStream is = new FileInputStream(file);
+            ObjectInputStream ois = new ObjectInputStream(is);
+
+            TreeMap<Integer, Customer> mapInFile = (TreeMap<Integer, Customer>) ois.readObject();
+            ois.close();
+            is.close();
+
+            for (Map.Entry<Integer, Customer> m : mapInFile.entrySet()) {
+                newMaptoSave.put(m.getKey(), m.getValue());
+            }
+
+            newMaptoSave.put(platenbmr, GetCustomerData());
+
+            OutputStream os = new FileOutputStream(file);
+            ObjectOutputStream oos = new ObjectOutputStream(os);
+            oos.writeObject(newMaptoSave);
+            oos.flush();
+            oos.close();
+
+        }
+
+    }
+
+    private void SaveCustomerMaptoNewFile(int platenbmr, File file) throws ParseException, IOException {
+
+        TreeMap<Integer, Customer> newMapToSave = new TreeMap<>();
+
+        newMapToSave.put(platenbmr, GetCustomerData());
+
+        OutputStream os = new FileOutputStream(file);
+        ObjectOutputStream oos = new ObjectOutputStream(os);
+        oos.writeObject(newMapToSave);
+        oos.flush();
+        oos.close();
+    }
+
+
+    private void NewCustomer() {
+        coveredRisksList.clear();
+        coveredRisksList.clear();
+        premiumRisksList.clear();
+        ceilingRisksList.clear();
+        cond1 = false;
+        cond2 = false;
+        cond3 = false;
+
+        subFirstName.setText("");
+        subLastName.setText("");
+        subCity.setText("");
+        subPhone.setText("");
+        plateNum.setText("");
+        model.setText("");
+        manufacturer.setText("");
+        estimated.setText("");
+
+        groupOne.clearSelection();
+        groupTwo.clearSelection();
+
+        obligatoryCheckbox.setSelected(false);
+        allRisksCheckbox.setSelected(false);
+        vehicleDamageCheckbox.setSelected(false);
+        driverDamageCheckbox.setSelected(false);
+        assistCheckbox.setSelected(false);
+    }
 
     public static void main(String[] args) {
         MainScreen mainScreen = new MainScreen();
@@ -628,6 +834,4 @@ public class MainScreen extends JFrame {
         mainScreen.setTitle("InsuranceArc");
         mainScreen.setBounds(0, 0, 1920, 1080);
     }
-
-
 }
